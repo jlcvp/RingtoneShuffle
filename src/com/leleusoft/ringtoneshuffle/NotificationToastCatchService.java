@@ -1,13 +1,14 @@
 package com.leleusoft.ringtoneshuffle;
 
 import java.util.List;
- 
+
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.gesture.GestureStroke;
 import android.os.Build;
 import android.os.Parcelable;
 import android.provider.Settings;
@@ -25,7 +26,7 @@ import android.view.accessibility.AccessibilityEvent;
 public class NotificationToastCatchService extends AccessibilityService {
  
     private final AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-    private static final String TAG = "MyAccessibilityService";
+    private static final String TAG = "DEBUG";
      
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -113,17 +114,18 @@ public class NotificationToastCatchService extends AccessibilityService {
  
         // info.flags = AccessibilityServiceInfo.DEFAULT;
  
-        info.notificationTimeout = 100;
+      
  
         this.setServiceInfo(info);
     }
+   
  
     public static final class Constants {
          
         public static final String EXTRA_MESSAGE = "extra_message";
         public static final String EXTRA_PACKAGE = "extra_package";
-        public static final String ACTION_CATCH_TOAST = "com.mytest.accessibility.CATCH_TOAST";
-        public static final String ACTION_CATCH_NOTIFICATION = "com.mytest.accessibility.CATCH_NOTIFICATION";  
+        public static final String ACTION_CATCH_TOAST = "com.leleusoft.accessibility.CATCH_TOAST";
+        public static final String ACTION_CATCH_NOTIFICATION = "com.leleusoft.accessibility.CATCH_NOTIFICATION";  
     }
      
     /**
@@ -159,17 +161,19 @@ public class NotificationToastCatchService extends AccessibilityService {
                 while (splitter.hasNext()) {
                     String accessabilityService = splitter.next();
                      
-                    Log.v(TAG, "-------------- > accessabilityService :: " + accessabilityService);
+                    Log.v(TAG, "-------------- > accessabilityService :: " + accessabilityService+"\nService :: "+service);
                     if (accessabilityService.equalsIgnoreCase(service)) {
                         Log.v(TAG, "We've found the correct setting - accessibility is switched on!");
-                        return true;
+                        accessibilityFound = true;
                     }
                 }
             }
         } else {
             Log.v(TAG, "***ACCESSIBILIY IS DISABLED***");
         }
-                 
-        return accessibilityFound;     
+       
+        return accessibilityFound; 
+        
     }
+       
 }
