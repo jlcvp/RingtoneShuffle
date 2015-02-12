@@ -66,7 +66,7 @@ public class RingtoneShuffleIntentService extends IntentService {
 	private File getRandFile()
 	{
 		List<String> results = new ArrayList<String>();
-		String basePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/portalNotification";
+		String basePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ShuffleNotifications";
 		File[] files = new File(basePath).listFiles();
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 		String path=null;
