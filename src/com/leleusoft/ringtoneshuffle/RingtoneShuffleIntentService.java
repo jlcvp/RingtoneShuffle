@@ -1,6 +1,9 @@
 package com.leleusoft.ringtoneshuffle;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import android.app.IntentService;
 import android.content.ContentValues;
@@ -10,17 +13,18 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 public class RingtoneShuffleIntentService extends IntentService {
 
-	public RingtoneShuffleIntentService(String name) {
-		super(name);		
+	public RingtoneShuffleIntentService() {
+		super("RingtoneShuffleIntentService");
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		//verificar algum extra aqui e setar o ringtone
-		
+		Log.i("DEBUG", "Service - onHandleIntent");
+		setRingtone();
 	}
 	
 	
@@ -41,17 +45,16 @@ public class RingtoneShuffleIntentService extends IntentService {
 		//Insert it into the database
 		Uri uri = MediaStore.Audio.Media.getContentUriForPath(k.getAbsolutePath());
 		String[] proj  = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.TITLE};
-		Cursor c = getContentResolver().query(uri, proj , "WHERE "+MediaStore.MediaColumns.DATA+"="+k.getAbsolutePath(),null, null);
+		Cursor c = getContentResolver().query(uri, proj , ""+MediaStore.MediaColumns.DATA+" like '"+k.getAbsolutePath()+"'",null, null);
 		
 		Uri newUri = null;
 		if(c!=null && c.getCount()>0) //já está no banco
 		{
+			this.getContentResolver().delete(uri, ""+MediaStore.MediaColumns.DATA+" like '"+k.getAbsolutePath()+"'", null);
+			
+		}		
 			newUri = this.getContentResolver().insert(uri, values);
-		}
-		else
-		{
-			newUri = uri;
-		}
+		
 		
 		RingtoneManager.setActualDefaultRingtoneUri(
 		  this,
@@ -62,8 +65,24 @@ public class RingtoneShuffleIntentService extends IntentService {
 	
 	private File getRandFile()
 	{
-		
-		return new File("hue");
+		List<String> results = new ArrayList<String>();
+		String basePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/portalNotification";
+		File[] files = new File(basePath).listFiles();
+		//If this pathname does not denote a directory, then listFiles() returns null. 
+		String path=null;
+		for (File file : files) {
+		    if (file.isFile()) {
+		        results.add(file.getName());
+		    }
+		}
+		if(!results.isEmpty())
+		{
+			Random rnd = new Random(System.currentTimeMillis());
+			int i = rnd.nextInt(results.size());
+			path = basePath+"/"+results.get(i);			
+		}
+		Log.i("DEBUG", "File = "+path);
+		return new File(path);
 	}
 
 }

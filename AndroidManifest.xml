@@ -9,6 +9,8 @@
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -34,7 +36,7 @@
         </service>
         <service android:name=".RingtoneShuffleIntentService" >
         </service>
-        <receiver android:name="NotificationReceiver">
+        <receiver android:name=".NotificationReceiver">
             <intent-filter>
                 <action android:name="com.leleusoft.accessibility.CATCH_NOTIFICATION"/>
             </intent-filter>

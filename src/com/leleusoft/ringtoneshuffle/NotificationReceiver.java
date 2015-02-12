@@ -5,6 +5,7 @@ import com.leleusoft.ringtoneshuffle.NotificationToastCatchService.Constants;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 /**
  * Recebe o broadcast do bagui de notification e encaminha pra o service enfileirar
  * @author joaoleonardo
@@ -17,10 +18,10 @@ public class NotificationReceiver extends BroadcastReceiver {
 //		 Intent mIntent = new Intent(Constants.ACTION_CATCH_NOTIFICATION);
 //         mIntent.putExtra(Constants.EXTRA_PACKAGE, sourcePackageName);
 //         mIntent.putExtra(Constants.EXTRA_MESSAGE, notificationMsg);
-		
+		Log.i("DEBUG", "BROADCASTRECEBIDA");
 		Intent it = new Intent(context, RingtoneShuffleIntentService.class);
 		it.putExtra(NotificationToastCatchService.Constants.EXTRA_PACKAGE, intent.getStringExtra(NotificationToastCatchService.Constants.EXTRA_PACKAGE));
-		it.putExtra(NotificationToastCatchService.Constants.EXTRA_MESSAGE, intent.getStringExtra(NotificationToastCatchService.Constants.EXTRA_MESSAGE));
+		//it.putExtra(NotificationToastCatchService.Constants.EXTRA_MESSAGE, intent.getStringExtra(NotificationToastCatchService.Constants.EXTRA_MESSAGE));
 		context.startService(it);
 	}
 	
